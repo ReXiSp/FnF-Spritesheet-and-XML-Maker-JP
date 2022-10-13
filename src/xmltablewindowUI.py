@@ -118,10 +118,10 @@ class Ui_TableWidgetThing(object):
 
     def retranslateUi(self, TableWidgetThing):
         _translate = QtCore.QCoreApplication.translate
-        TableWidgetThing.setWindowTitle(_translate("TableWidgetThing", "XML Table View"))
+        TableWidgetThing.setWindowTitle(_translate("TableWidgetThing", "XML テーブルビュー"))
         self.framex_label.setText(_translate("TableWidgetThing", "FrameX"))
         self.framey_label.setText(_translate("TableWidgetThing", "FrameY"))
         self.framewidth_label.setText(_translate("TableWidgetThing", "FrameWidth"))
         self.frameheight_label.setText(_translate("TableWidgetThing", "FrameHeight"))
-        self.frame_preview_label.setText(_translate("TableWidgetThing", "Frame preview goes here"))
-        self.frame_info_label.setText(_translate("TableWidgetThing", "Info about the frame"))
+        self.frame_preview_label.setText(_translate("TableWidgetThing", "フレームプレビューはここに表示されます"))
+        self.frame_info_label.setText(_translate("TableWidgetThing", "フレームに関する情報"))

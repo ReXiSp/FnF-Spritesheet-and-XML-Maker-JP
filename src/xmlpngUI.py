@@ -136,7 +136,7 @@ class MyApp(QMainWindow):
         darkmode_action_group.setExclusive(True)
         darkmode_action_group.triggered.connect(self.set_dark_mode)
         
-        self.xml_table = XMLTableView(['Image Path', 'Name', 'Width', 'Height', 'FrameX', 'FrameY', 'FrameWidth', 'FrameHeight'])
+        self.xml_table = XMLTableView(['画像のパス', 'Name', 'Width', 'Height', 'FrameX', 'FrameY', 'FrameWidth', 'FrameHeight'])
         self.ui.actionView_XML_structure.triggered.connect(self.show_table_view)
         self.ui.actionView_XML_structure.setEnabled(len(self.labels) > 0)
         self.ui.actionFlipX.triggered.connect(lambda: self.flip_labels('X'))

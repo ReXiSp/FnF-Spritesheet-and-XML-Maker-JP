@@ -59,17 +59,17 @@ class XMLTableView(QWidget):
         idx = -1
         for _cell in _cells:
             if not (_cell.flags() & Qt.ItemIsEditable):
-                display_msg_box(self, "Bad cell selection", "There are un-editable cells in your selection!\nSelect cells from the same column, valid columns being\nFrameX, FrameY, FrameWidth or FrameHeight", QMessageBox.Critical)
+                display_msg_box(self, "編集不可能なセルを選択しています", "選択範囲に編集不可能なセルがあります。\n同じ列からセルを選択します。\n有効な列はFrameX、FrameY、FrameWidthまたはFrameHeightです。", QMessageBox.Critical)
                 return
             else:
                 if idx != -1 and _cell.column() != idx:
-                    display_msg_box(self, "Multiple Columns Selected", "Your selection spans multiple columns. Make sure to select cells that belong to the same column, valid columns being\nFrameX, FrameY, FrameWidth or FrameHeight", QMessageBox.Critical)
+                    display_msg_box(self, "複数の列を選択しています", "選択範囲に複数の列が入っています。必ず同じ列に属するセルを選択してください \n有効な列はFrameX、FrameY、FrameWidthまたはFrameHeightです。", QMessageBox.Critical)
                     return
                 else:
                     idx = _cell.column()
 
         rows = [ x.row() for x in _cells ]
-        text, okPressed = QInputDialog.getText(self, f"Change Value of {self.table_headings[idx - 4]}", "New value:"+(" "*50), QLineEdit.Normal)
+        text, okPressed = QInputDialog.getText(self, f"{self.table_headings[idx - 4]}の値を変更します。", "新しい値:"+(" "*50), QLineEdit.Normal)
         is_real_number = lambda s: s.isnumeric() or (s[0] == '-' and s[1:].isnumeric())
         if okPressed and text != '' and is_real_number(text):
             val = int(text)
@@ -223,9 +223,9 @@ class XMLTableView(QWidget):
         self.set_true_frame()
         
         if self.selected_row.data.from_single_png:
-            self.ui.frame_info_label.setText(f"Image path: {short_path}\tFrom existing spritesheet: No")
+            self.ui.frame_info_label.setText(f"画像のパス: {short_path}\tスプレッドシートからの画像: いいえ")
         else:
-            self.ui.frame_info_label.setText(f"Image path: {short_path}\tFrom existing spritesheet: Yes\tCo-ords in source spritesheet: x={self.selected_row.data.tx} y={self.selected_row.data.ty} w={self.selected_row.data.tw} h={self.selected_row.data.th}")
+            self.ui.frame_info_label.setText(f"画像のパス: {short_path}\tスプレッドシートからの画像: Yes\tソースのスプライトシートの列: x={self.selected_row.data.tx} y={self.selected_row.data.ty} w={self.selected_row.data.tw} h={self.selected_row.data.th}")
         
         self.frame_info = [self.selected_row.data.framex, self.selected_row.data.framey, self.selected_row.data.framew, self.selected_row.data.frameh]
         for spinbox, info in zip(self.frame_spinboxes, self.frame_info):
