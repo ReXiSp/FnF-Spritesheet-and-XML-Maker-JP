@@ -11,7 +11,7 @@ class AnimationView(QWidget):
         self.ui.setupUi(self)
 
         self.ui.play_anim_button.clicked.connect(self.play_animation)
-        self.ui.animation_display_area.setText("Click 'Play Animation' to start the animation preview")
+        self.ui.animation_display_area.setText("「アニメーションを再生」を押してプレビューを再生します")
         self.ui.animation_display_area.setStyleSheet("background-color:#696969;")
         
         self.animframes = []
@@ -33,7 +33,7 @@ class AnimationView(QWidget):
         if self.animstarted:
             self.timer.stop()
             self.animstarted = False
-            self.ui.play_anim_button.setText("Play Animation")
+            self.ui.play_anim_button.setText("アニメーションを再生")
         else:
             self.animstarted = True
             framerate = self.ui.framerate_adjust.value()
@@ -41,8 +41,8 @@ class AnimationView(QWidget):
             self.animframes = self.anim_names[animname]
             self.frameindex = 0
             print(f"Playing {animname} at {framerate}fps with nframes:{len(self.animframes)}")
-            self.ui.play_anim_button.setText("Stop Animation")
-            self.timer.start(1000/framerate)
+            self.ui.play_anim_button.setText("アニメーションを停止")
+            self.timer.start(1000 / framerate)
     
     def set_next_frame(self):
         curframe = self.animframes[self.frameindex]

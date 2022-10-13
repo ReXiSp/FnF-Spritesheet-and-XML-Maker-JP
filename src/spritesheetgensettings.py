@@ -140,22 +140,21 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Spritesheet Generation Settings"))
-        self.clip_checkbox.setText(_translate("Form", "Clip to bounding box (applies to every frame you add after this box checked)"))
-        self.label.setText(_translate("Form", "Animation Name prefixing:"))
-        self.charname_first_radiobtn.setText(_translate("Form", "Add Character Name \n"
-"Before Animation Prefix"))
-        self.custom_prefix_radiobtn.setText(_translate("Form", "Custom general animation prefix"))
-        self.label_2.setText(_translate("Form", "Custom Prefix:"))
-        self.no_prefix_radiobtn.setText(_translate("Form", "Don\'t use any prefix (what you type in the prefix box is exactly what will show up in the XML)"))
-        self.insist_prefix_checkbox.setText(_translate("Form", "Use Prefix even if frame is imported from existing XML"))
-        self.no_merge_checkbox.setText(_translate("Form", "Do not merge look-alike frames\n"
-"(WARNING: Can cause extremely large spritesheets which may cause windows to\n"
-"refuse to open them.\n"
-"May also cause crashes!)"))
+        Form.setWindowTitle(_translate("Form", "スプライトシート生成の設定"))
+        self.clip_checkbox.setText(_translate("Form", "空白を埋める（このボックスをチェックした後に追加したすべてのフレームに適用されます。）"))
+        self.label.setText(_translate("Form", "アニメーションの接頭辞"))
+        self.charname_first_radiobtn.setText(_translate("Form", "アニメーション名の前に \n"
+"キャラクター名を追加する"))
+        self.custom_prefix_radiobtn.setText(_translate("Form", "カスタム接頭辞を追加"))
+        self.label_2.setText(_translate("Form", "カスタム接頭辞:"))
+        self.no_prefix_radiobtn.setText(_translate("Form", "なにも追加しない"))
+        self.insist_prefix_checkbox.setText(_translate("Form", "既存のXMLからフレームを読み込む場合でも、接頭辞を追加する"))
+        self.no_merge_checkbox.setText(_translate("Form", "似ているフレームを結合しない\n"
+"警告：スプライトシートが極端に大きくなり、\n"
+"アプリで開くことができなくなることがあります。\n"
+"また、クラッシュの原因になることもあります。)"))
         self.frame_padding_spinbox.setSuffix(_translate("Form", "px"))
-        self.frame_padding_label.setText(_translate("Form", "Frame Padding (use this to add empty pixels to the edge of each frame, helps prevent \n"
-" sprites clipping into each other)"))
-        self.packingalgo_label.setText(_translate("Form", "Packing Algorithm"))
-        self.save_settings_btn.setText(_translate("Form", "Save Settings"))
-        self.settings_cancel_btn.setText(_translate("Form", "Cancel"))
+        self.frame_padding_label.setText(_translate("Form", "Frame Padding（各フレームの端に空のピクセルを追加し、スプライトのはみ出しを防止します。）"))
+        self.packingalgo_label.setText(_translate("Form", "生成アルゴリズム"))
+        self.save_settings_btn.setText(_translate("Form", "保存"))
+        self.settings_cancel_btn.setText(_translate("Form", "キャンセル"))

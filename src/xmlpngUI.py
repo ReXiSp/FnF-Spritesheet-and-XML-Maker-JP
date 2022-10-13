@@ -41,7 +41,7 @@ class MyApp(QMainWindow):
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("XML Generator")
+        self.setWindowTitle("XML作成支援ツール")
 
         self.ui.generatexml_btn.clicked.connect(self.generate_xml)
         self.ui.actionExport_as_Spritesheet_and_XML.triggered.connect(self.generate_xml)
@@ -85,7 +85,7 @@ class MyApp(QMainWindow):
         self.action_zoom_out.triggered.connect(self.zoomOutPixmap)
         self.action_zoom_out.setShortcut("Ctrl+o")
 
-        self.ui.zoom_label.setText("Zoom: 100%")
+        self.ui.zoom_label.setText("ズーム: 100%")
 
         self.iconpaths = []
         self.icongrid_path = ""
@@ -127,8 +127,8 @@ class MyApp(QMainWindow):
         self.ui.actionPreview_Animation.setEnabled(len(self.labels) > 0)
         # adding a QActionGroup at runtime :/
         darkmode_action_group = QActionGroup(self.ui.menuDefault_Dark_mode)
-        theme_opts = ["Default", "Dark Mode"]
-        checked_action = "Default" if prefs.get("theme", 'default') != 'dark' else "Dark Mode"
+        theme_opts = ["デフォルト", "ダーク"]
+        checked_action = "デフォルト" if prefs.get("theme", 'default') != 'dark' else "ダーク"
         for opt in theme_opts:
             action = QAction(opt, self.ui.menuDefault_Dark_mode, checkable=True, checked=(opt == checked_action))
             self.ui.menuDefault_Dark_mode.addAction(action)
@@ -201,16 +201,16 @@ class MyApp(QMainWindow):
     
 
     def open_gif(self):
-        gifpath = self.get_asset_path("Select the GIF file", "GIF images (*.gif)")
+        gifpath = self.get_asset_path("GIFを選択...", "GIF画像 (*.gif)")
         if gifpath != '':
-            update_prog_bar, progbar = display_progress_bar(self, "Extracting sprite frames....")
+            update_prog_bar, progbar = display_progress_bar(self, "フレームを追加中....")
             QApplication.processEvents()
             
             sprites = spritesheetutils.get_gif_frames(gifpath, update_prog_bar)
             for i, spfr in enumerate(sprites):
                 spfr.frameparent = self
                 self.add_spriteframe(spfr)
-                update_prog_bar(50 + ((i+1)*50//len(sprites)), f"Adding frames from: {gifpath}")
+                update_prog_bar(50 + ((i+1)*50//len(sprites)), f"フレームを{gifpath}から追加しました")
             progbar.close()
             
             self.ui.posename_btn.setDisabled(self.num_labels <= 0)
@@ -236,7 +236,7 @@ class MyApp(QMainWindow):
         self.xml_table.show()
 
     def set_dark_mode(self, event):
-        if event.text() == "Dark Mode":
+        if event.text() == "ダーク":
             styles = get_stylesheet_from_file("./assets/app-styles.qss")
             self.set_theme(styles)
         else:
@@ -297,10 +297,10 @@ class MyApp(QMainWindow):
         return super().resizeEvent(a0)
     
     def open_existing_spsh_xml(self):
-        imgpath = self.get_asset_path("Select Spritesheet File", "PNG Images (*.png)")
+        imgpath = self.get_asset_path("スプライトシートの画像を選択...", "スプライトシート (*.png)")
 
         if imgpath != '':
-            xmlpath = self.get_asset_path("Select XML File", "XML Files (*.xml)")
+            xmlpath = self.get_asset_path("スプライトシートのXMLを選択...", "スプライトシート (*.xml)")
             if xmlpath != '':
                 trubasenamefn = lambda fpath: path.basename(fpath).split('.')[0]
                 charname = trubasenamefn(xmlpath)
@@ -310,7 +310,7 @@ class MyApp(QMainWindow):
                     self.msgbox.setText("The Spritesheet and the XML file have different file names.\nThe character name will not be auto-filled")
                     self.msgbox.setIcon(QMessageBox.Warning)
                     self.msgbox.addButton("OK", QMessageBox.YesRole)
-                    cancel_import = self.msgbox.addButton("Cancel import", QMessageBox.NoRole)
+                    cancel_import = self.msgbox.addButton("キャンセル", QMessageBox.NoRole)
                     x = self.msgbox.exec_()
                     clickedbtn = self.msgbox.clickedButton()
                     if clickedbtn == cancel_import:
@@ -319,14 +319,14 @@ class MyApp(QMainWindow):
                     print("[DEBUG] Exit status of msgbox: "+str(x))
 
 
-                update_prog_bar, progbar = display_progress_bar(self, "Extracting sprite frames....")
+                update_prog_bar, progbar = display_progress_bar(self, "フレームを追加中....")
                 QApplication.processEvents()
 
                 sprites = spritesheetutils.split_spsh(imgpath, xmlpath, update_prog_bar)
                 for i, spfr in enumerate(sprites):
                     spfr.frameparent = self
                     self.add_spriteframe(spfr)
-                    update_prog_bar(50 + ((i+1)*50//len(sprites)), f"Adding: {imgpath}")
+                    update_prog_bar(50 + ((i+1)*50//len(sprites)), f"フレームを{imgpath}から追加しました")
                 progbar.close()
                 
                 self.ui.posename_btn.setDisabled(self.num_labels <= 0)
@@ -336,16 +336,16 @@ class MyApp(QMainWindow):
         
     
     def open_frame_imgs(self):
-        imgpaths = self.get_asset_path("Select sprite frames", "PNG Images (*.png)", True)
+        imgpaths = self.get_asset_path("スプライトの画像を選択...", "スプライト (*.png)", True)
 
         if imgpaths:
-            update_prog_bar, progbar = display_progress_bar(self, "Importing sprite frames....", 0, len(imgpaths))
+            update_prog_bar, progbar = display_progress_bar(self, "スプライトをインポート中....", 0, len(imgpaths))
             QApplication.processEvents()
 
             for i, pth in enumerate(imgpaths):
                 # self.add_img(pth)
                 self.add_spriteframe(SpriteFrame(self, pth))
-                update_prog_bar(i+1, f"Adding: {pth}")
+                update_prog_bar(i+1, f"フレームを{pth}から追加しました")
             progbar.close()
         
         if len(self.labels) > 0:
@@ -406,18 +406,18 @@ class MyApp(QMainWindow):
         errmsg = xmlpngengine.save_img_sequence(self.labels, savedir, updatefn)
         progbar.close()
         if errmsg:
-            self.display_msg_box("Error!", text=f"An error occured: {errmsg}", icon=QMessageBox.Critical)
+            self.display_msg_box("エラー", text=f"エラーが発生しました: {errmsg}", icon=QMessageBox.Critical)
         else:
-            self.display_msg_box("Success!", text="Image sequence saved successfully!", icon=QMessageBox.Information)
+            self.display_msg_box("成功！", text="画像の保存は正常に完了しました！", icon=QMessageBox.Information)
     
     def generate_xml(self):
         charname = self.ui.charname_textbox.text()
         charname = charname.strip()
         if self.num_labels > 0 and charname != '':
-            savedir = QFileDialog.getExistingDirectory(caption="Save files to...")
+            savedir = QFileDialog.getExistingDirectory(caption="ファイルを保存...")
             print("Stuff saved to: ", savedir)
             if savedir != '':
-                update_prog_bar, progbar = display_progress_bar(self, "Generating....", 0, len(self.labels))
+                update_prog_bar, progbar = display_progress_bar(self, "生成中....", 0, len(self.labels))
                 QApplication.processEvents()
                 
                 statuscode, errmsg = xmlpngengine.make_png_xml(
@@ -429,20 +429,20 @@ class MyApp(QMainWindow):
                 progbar.close()
                 if errmsg is None:
                     self.display_msg_box(
-                        window_title="Done!", 
-                        text="Your files have been generated!\nCheck the folder you had selected",
+                        window_title="完了！", 
+                        text="ファイルは正常に生成されました！",
                         icon=QMessageBox.Information
                     )
                 else:
                     self.display_msg_box(
-                        window_title="Error!",
-                        text=("Some error occured! Error message: " + errmsg),
+                        window_title="エラー",
+                        text=("何かのエラーが発生しました！ エラー内容: " + errmsg),
                         icon=QMessageBox.Critical
                     )
         else:
-            errtxt = "Please enter some frames" if self.num_labels <= 0 else "Please enter the name of your character"
+            errtxt = "フレームを追加してください。" if self.num_labels <= 0 else "キャラクター名を設定してください。"
             self.display_msg_box(
-                window_title="Error!", 
+                window_title="エラー", 
                 text=errtxt,
                 icon=QMessageBox.Critical
             )
@@ -457,7 +457,7 @@ class MyApp(QMainWindow):
             self.ui.icongrid_holder_label.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
             self.ui.scrollAreaWidgetContents_2.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
             self.ui.icongrid_holder_label.setPixmap(icongrid_pixmap)
-            self.ui.zoom_label.setText("Zoom: %.2f %%" % (self.icongrid_zoom*100))
+            self.ui.zoom_label.setText("ズーム: %.2f %%" % (self.icongrid_zoom*100))
 
 
     def zoomOutPixmap(self):
@@ -470,11 +470,11 @@ class MyApp(QMainWindow):
             self.ui.icongrid_holder_label.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
             self.ui.scrollAreaWidgetContents_2.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
             self.ui.icongrid_holder_label.setPixmap(icongrid_pixmap)
-            self.ui.zoom_label.setText("Zoom: %.2f %%" % (self.icongrid_zoom*100))
+            self.ui.zoom_label.setText("ズーム: %.2f %%" % (self.icongrid_zoom*100))
     
     def uploadIconGrid(self):
-        print("Uploading icongrid...")
-        self.icongrid_path = self.get_asset_path("Select the Icon-grid", "PNG Images (*.png)")
+        print("アイコングリッドをアップロード中...")
+        self.icongrid_path = self.get_asset_path("アイコングリッドを選択...", "グリッド (*.png)")
         icongrid_pixmap = QPixmap(self.icongrid_path)
         self.ui.icongrid_holder_label.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
         self.ui.scrollAreaWidgetContents_2.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
@@ -487,22 +487,22 @@ class MyApp(QMainWindow):
     def getNewIconGrid(self):
         if self.ui.use_psychengine_checkbox.isChecked():
             if len(self.iconpaths) > 0:
-                print("Using psych engine style icon grid generation....")
-                savepath, _ = QFileDialog.getSaveFileName(self, "Save as filename", filter="PNG files (*.png)")
+                print("Psych Engine用のアイコンを生成....")
+                savepath, _ = QFileDialog.getSaveFileName(self, "名前を付けて保存", filter="画像 (*.png)")
 
                 stat, problemimg, exception_msg = icongridutils.makePsychEngineIconGrid(self.iconpaths, savepath)
 
                 if exception_msg is not None:
                     self.display_msg_box(
-                        window_title="Error!", 
-                        text=f"An error occured: {exception_msg}",
+                        window_title="エラー", 
+                        text=f"エラーが発生しました: {exception_msg}",
                         icon=QMessageBox.Critical
                     )
                 else:
                     if stat == 0:
                         self.display_msg_box(
-                            window_title="Done!", 
-                            text="Your icon-grid has been generated!",
+                            window_title="完了！", 
+                            text="アイコングリッドは正常に生成されました！",
                             icon=QMessageBox.Information
                         )
                         # display final image onto the icon display area 
@@ -512,14 +512,14 @@ class MyApp(QMainWindow):
                         self.ui.icongrid_holder_label.setPixmap(icongrid_pixmap)
                     elif stat == 1:
                         self.display_msg_box(
-                            window_title="Icon image error",
-                            text=f"The icon {problemimg} is bigger than 150x150 and couldn't be added to the final grid\nThe final grid was generated without it",
+                            window_title="アイコン画像のエラー",
+                            text=f"{problemimg} 150x150より大きいので、最後のグリッドに追加することはできません。\nこのアイコンは含まれずに生成されました",
                             icon=QMessageBox.Warning
                         )
             else:
                 self.display_msg_box(
-                    window_title="Error!", 
-                    text="Please select some icons",
+                    window_title="エラー", 
+                    text="アイコンを選択してください。",
                     icon=QMessageBox.Critical
                 )
             
@@ -533,33 +533,33 @@ class MyApp(QMainWindow):
             stat, newinds, problemimg, exception_msg = icongridutils.appendIconToGrid(self.icongrid_path, self.iconpaths) #, savedir)
             print("[DEBUG] Function finished with status: ", stat)
             errmsgs = [
-                'Icon grid was too full to insert a new icon', 
-                'Your character icon: {} is too big! Max size: 150 x 150',
-                'Unable to find suitable location to insert your icon'
+                'アイコングリッドが一杯で、新しいアイコンを挿入できません。', 
+                '{}のサイズは非常に大きいです。150x150が上限です。',
+                'アイコンを挿入する適切な場所が見つかりません。'
             ]
 
             if exception_msg is not None:
                 self.display_msg_box(
-                    window_title="An Error occured", 
-                    text=("An Exception (Error) occurred somewhere\nError message:\n"+exception_msg),
+                    window_title="エラーが発生しました", 
+                    text=("例外(エラー)が発生しました\nエラー内容:\n"+exception_msg),
                     icon=QMessageBox.Critical
                 )
             else:
                 if stat == 0:
                     self.display_msg_box(
-                        window_title="Done!", 
-                        text="Your icon-grid has been generated!\nYour icon's indices are {}".format(newinds),
+                        window_title="完了！", 
+                        text="アイコングリッドが正常に生成されました！\nあなたのアイコンのインデックスは{}です。".format(newinds),
                         icon=QMessageBox.Information
                     )
                 elif stat == 4:
                     self.display_msg_box(
-                        window_title="Warning!", 
-                        text="One of your icons was smaller than the 150 x 150 icon size!\nHowever, your icon-grid is generated but the icon has been re-adjusted. \nYour icon's indices: {}".format(newinds),
+                        window_title="警告！", 
+                        text="アイコンが150×150より小さいです！\nしかし、アイコングリッドは生成されました。(アイコンは微調整されました。) \nYour icon's indices: {}".format(newinds),
                         icon=QMessageBox.Warning
                     )
                 else:
                     self.display_msg_box(
-                        window_title="Error!", 
+                        window_title="エラー", 
                         text=errmsgs[stat - 1].format(problemimg),
                         icon=QMessageBox.Critical
                 )
@@ -568,32 +568,32 @@ class MyApp(QMainWindow):
             self.ui.scrollAreaWidgetContents_2.setFixedSize(icongrid_pixmap.width(), icongrid_pixmap.height())
             self.ui.icongrid_holder_label.setPixmap(icongrid_pixmap)
         else:
-            errtxt = "Please add an icon-grid image" if self.icongrid_path == '' else "Please add an icon"
+            errtxt = "アイコングリッドの画像を追加してください" if self.icongrid_path == '' else "アイコンを追加して下さい"
             self.display_msg_box(
-                window_title="Error!", 
+                window_title="エラー", 
                 text=errtxt,
                 icon=QMessageBox.Critical
             )
     
     def appendIcon(self):
         print("Appending icon")
-        self.iconpaths = self.get_asset_path("Select your character icons", "PNG Images (*.png)", True)
+        self.iconpaths = self.get_asset_path("アイコンを選択...", "アイコン (*.png)", True)
         print("Got icon: ", self.iconpaths)
         if len(self.iconpaths) > 0:
             print("Valid selected")
-            self.ui.iconselected_label.setText("No. of\nicons selected:\n{}".format(len(self.iconpaths)))
+            self.ui.iconselected_label.setText("追加されたアイコンの数:\n{}".format(len(self.iconpaths)))
         else:
-            self.ui.iconselected_label.setText("No. of\nicons selected:\n0")
+            self.ui.iconselected_label.setText("追加されたアイコンの数:\n0")
     
     def clearSelectedIcons(self):
         self.iconpaths = []
-        self.ui.iconselected_label.setText("Number of\nicons selected:\n{}".format(len(self.iconpaths)))
+        self.ui.iconselected_label.setText("選択されたアイコンの数:\n{}".format(len(self.iconpaths)))
 
     def setAnimationNames(self):
         if len(self.selected_labels) == 0:
-            self.display_msg_box(window_title="Error", text="Please select some frames to rename by checking the checkboxes on them", icon=QMessageBox.Critical)
+            self.display_msg_box(window_title="エラー", text="名前を変更するフレームにチェックを入れてください。", icon=QMessageBox.Critical)
         else:
-            text, okPressed = QInputDialog.getText(self, "Change Animation (Pose) Prefix Name", "Current Animation (Pose) prefix:"+(" "*50), QLineEdit.Normal) # very hack-y soln but it works!
+            text, okPressed = QInputDialog.getText(self, "アニメーション (ポーズ) の名前を変更する", "設定するアニメーション (ポーズ) の名前:"+(" "*50), QLineEdit.Normal) # very hack-y soln but it works!
             if okPressed and text != '':
                 print("new pose prefix = ", text)
                 for label in self.selected_labels:

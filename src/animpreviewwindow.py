@@ -52,8 +52,8 @@ class Ui_animation_view(object):
 
     def retranslateUi(self, animation_view):
         _translate = QtCore.QCoreApplication.translate
-        animation_view.setWindowTitle(_translate("animation_view", "Animation Preview"))
-        self.animation_info_label.setText(_translate("animation_view", "Animation Name to be played:"))
+        animation_view.setWindowTitle(_translate("animation_view", "アニメーションのプレビュー"))
+        self.animation_info_label.setText(_translate("animation_view", "再生するアニメーション:"))
         self.framerate_adjust.setSuffix(_translate("animation_view", "fps"))
-        self.play_anim_button.setText(_translate("animation_view", "Play Animation"))
-        self.animation_display_area.setText(_translate("animation_view", "--PIXMAP GOES HERE--"))
+        self.play_anim_button.setText(_translate("animation_view", "アニメーションを再生"))
+        self.animation_display_area.setText(_translate("animation_view", "--pixmapはここにあります--"))

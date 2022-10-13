@@ -9,8 +9,8 @@ class SettingsWindow(QWidget):
         self.ui.setupUi(self)
 
         self.ui.packingalgo_combobox.addItems([
-            "Growing Packer (Fits the frames as tightly as possible but doesn't maintain frame ordering)",
-            "Ordered Packer (Fits the frames in the order they were added but produces a slightly bigger spritesheet)"
+            "Growing Packer（できるだけフレームに密着させるが、フレームオーダーは維持しない）",
+            "Ordered Packer（フレームが追加された順にフィットしますが、若干大きなスプライトシートを生成します。）"
         ])
         self.ui.packingalgo_combobox.setCurrentIndex(0)
         # self.setStyleSheet(get_stylesheet_from_file("app-styles.qss"))
