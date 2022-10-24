@@ -1,5 +1,7 @@
-# FnF-Spritesheet-and-XML-Maker
+# FnF-Spritesheet-and-XML-Maker-JP
 A Friday Night Funkin' mod making helper tool that allows you to generate XML files and spritesheets from individual pngs. This is a free and open-source mini-replacement tool to the "Generate Spritesheet" functionality in Adobe Animate/Flash
+<br />
+日本語化したFnF-Spritesheet-and-XML-Makerです。日本人にも使いやすいと思います。
 <br />
 To download the application for windows instead of running it from source click on <a href="https://gamebanana.com/tools/7136">this link</a>.
 
